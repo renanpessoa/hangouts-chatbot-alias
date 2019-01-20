@@ -1,0 +1,25 @@
+version: '3.4'
+services:
+  app:
+    labels:
+      _author: "Renan Pessoa"
+      _version: 0.1
+    build: .
+    container_name: chat_bot
+    environment:
+      - TOKEN=YOUR_TOKEN
+      - HOST_REDIS=redis
+    ports:
+      - 5000:5000
+    links:
+      - redis
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:5.0.3-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+volumes:  
+  redis_data:
