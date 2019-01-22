@@ -81,7 +81,6 @@ def _add(users, room_name):
         if check_result == 1:
           users_added.append("<" + user + ">")
         else:
-          ignore = user
           users_added.append('Already added ->> ' + "<" + user + ">")
 
         check_continue = 1
@@ -139,7 +138,6 @@ def _remove(users, room_name):
         if check_result == 1:
           users_removed.append("<" + user + ">")
         else:
-          ignore = user
           users_removed.append('Not found ->> ' + "<" + user + ">")
 
         check_continue = 1
