@@ -113,8 +113,8 @@ def _add(users, room_name):
       else:
         users_added.append("Already added ->> " + "<" + user + ">")
 
-      text = "```Added users: %s ```" % (','.join(list(set(users_added))))
-      return text
+    text = "```Added users: %s ```" % (','.join(list(set(users_added))))
+    return text
 
   except:
 
@@ -169,8 +169,8 @@ def _remove(users, room_name):
         users_removed.append("<" + user + ">")
       else:
         users_removed.append("Not found ->> " + "<" + user + ">")
-      text = "```Removed users: %s ```" % (','.join(list(set(users_removed))))
-      return text
+    text = "```Removed users: %s ```" % (','.join(list(set(users_removed))))
+    return text
   except:
 
     text = 'Please add user with @'
