@@ -43,11 +43,10 @@ git clone https://github.com/renanpessoa/hangouts-chatbot-alias.git
 cd hangouts-chatbot-alias
 ```
 
-- Add the [Token of Google Hangouts API](https://developers.google.com/hangouts/chat/how-tos/bots-publish) in  `docker-compose.yml`, like that:
+- Access this page https://console.developers.google.com/iam-admin/settings?authuser=1&organizationId=`$ORGANIZATIONID`&project=`$PROJECT_NAME` and add the project number of the bot in `application.py` like that: 
 
 ```bash
-    environment:
-      - TOKEN=rOkADgJ253NLugXv0=
+  PROJECT_NUMBER = ['0123456789']
 ``` 
 
 - Build images: 
@@ -59,12 +58,6 @@ docker-compose build
 
 ```bash
 docker-compose up -d
-``` 
-
-- Test with bellow command, if return `'{"text":"Invalid token"}'` it's ok
-
-```bash
-curl -d '{"token":"Teste="}' -X POST -H 'Content-Type: application/json' localhost:5000
 ``` 
 
 # How it works
@@ -139,11 +132,10 @@ git clone https://github.com/renanpessoa/hangouts-chatbot-alias.git
 cd hangouts-chatbot-alias
 ```
 
-- Adicione o Token de autenticação do bot [fornecido pelo Google Hangouts API](https://developers.google.com/hangouts/chat/how-tos/bots-publish) na variável TOKEN dentro do arquivo `docker-compose.yml` sem aspas apenas o código.
+- Acesse a página https://console.developers.google.com/iam-admin/settings?authuser=1&organizationId=`$ORGANIZATIONID`&project=`$PROJECT_NAME` e adicione o número do projeto do bot no arquivo `application.py` exemplo: 
 
 ```bash
-    environment:
-      - TOKEN=rOkADgJ253NLugXv0=
+  PROJECT_NUMBER = ['0123456789']
 ``` 
 
 - Realize o build das imagens utilizando o comando abaixo, o procedimento pode levar alguns minutos.
@@ -155,12 +147,6 @@ docker-compose build
 
 ```bash
 docker-compose up -d
-``` 
-
-- Teste a aplicação com o comando abaixo, deve ser retornado a mensagem `'{"text":"Invalid token"}'`
-
-```bash
-curl -d '{"token":"Teste="}' -X POST -H 'Content-Type: application/json' localhost:5000
 ``` 
 
 # Como funciona

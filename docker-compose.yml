@@ -7,7 +7,6 @@ services:
     build: .
     container_name: chat_bot
     environment:
-      - TOKEN=YOUR_TOKEN
       - HOST_REDIS=redis
     ports:
       - 5000:5000

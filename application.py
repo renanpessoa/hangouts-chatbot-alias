@@ -1,6 +1,7 @@
 from flask import Flask, request, json
-import os 
+from oauth2client import client
 import redis
+import os 
 
 application = Flask(__name__)
 
@@ -31,6 +32,39 @@ Usage: @bot  [command] (message)
 ```
 """
   return text
+
+def validate_token():
+
+  # Bearer Tokens received by bots will always specify this issuer.
+  CHAT_ISSUER = 'chat@system.gserviceaccount.com'
+
+  # Url to obtain the public certificate for the issuer.
+  PUBLIC_CERT_URL_PREFIX = 'https://www.googleapis.com/service_accounts/v1/metadata/x509/'
+
+  # Intended audience of the token, which will be the project number of the bot.
+  #Go to -> https://console.developers.google.com/iam-admin/settings?authuser=1&organizationId=$ORGANIZATIONID&project=$PROJECT_NAME
+  PROJECT_NUMBER = ['']
+
+  # Authorization HTTP header.
+  BEARER_TOKEN = request.headers['Authorization'].split()[1]
+
+  for project_number in PROJECT_NUMBER:
+    try:
+      # Verify valid token, signed by CHAT_ISSUER, intended for a third party.
+      token = client.verify_id_token(
+          BEARER_TOKEN, project_number, cert_uri=PUBLIC_CERT_URL_PREFIX + CHAT_ISSUER)
+      break
+    except Exception as err: 
+      print(f'->> {err}')
+      pass
+
+  try: 
+    if token['iss'] != CHAT_ISSUER:
+      return 1, 'Invalid issuee, please contact administrator.'
+    else:
+      return 0, 'Ok'
+  except:
+      return 1, 'Invalid token, please contact administrator.'
 
 def send_msg(texto, room_name):
   """Send message to Hangouts Chat."""
@@ -179,14 +213,13 @@ def _remove(users, room_name):
 @application.route('/', methods=['POST'])
 def on_event():
   """Handler for events from Hangouts Chat."""
-  event = request.get_json()
-  TOKEN = os.environ.get('TOKEN', 'NULL')
 
-  try:
-    if event['token'] != TOKEN:
-      return json.jsonify({'text': 'Invalid token'})
-  except:
-    return json.jsonify({'text': 'Invalid token'})
+  event = request.get_json()
+ 
+  token_status, token_text = validate_token()
+
+  if token_status != 0:
+    return json.jsonify({'text': token_text})
 
   if event['type'] == 'ADDED_TO_SPACE' and event['space']['type'] == 'ROOM':
     text = 'Thanks for adding me to "%s"! For help type @bot help' % event['space']['displayName']
